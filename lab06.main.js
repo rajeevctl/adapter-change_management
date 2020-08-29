@@ -186,25 +186,7 @@ healthcheck(callback) {
      * Note how the object was instantiated in the constructor().
      * get() takes a callback function.
      */
-     this.connector.get((data, error) => {
-        if (error) {
-          callback(data, error);
-        } else {
-            if (data.hasOwnProperty('body')) {
-              var body_array = (JSON.parse(data.body));
-              var num_results = body_array.result.length;
-              var changeTicket = [];
-
-              for(var i = 0; i < num_results; i += 1) {
-                var result_array = (JSON.parse(data.body).result);
-                changeTicket.push({"change_ticket_number" : result_array[i].number, "active" : result_array[i].active, "priority" : result_array[i].priority,
-                                   "description" : result_array[i].description, "work_start" : result_array[i].work_start, "work_end" : result_array[i].work_end,
-                                   "change_ticket_key" : result_array[i].sys_id});
-              } 
-            callback(changeTicket, error); 
-            }
-          } 
-      });
+     this.connector.getRecord(callback);
   }
 
   /**
@@ -223,21 +205,7 @@ healthcheck(callback) {
      * Note how the object was instantiated in the constructor().
      * post() takes a callback function.
      */
-      this.connector.post((data, error) => {
-          if (error) {
-            //console.error(`\nError returned from POST request:\n${JSON.stringify(error)}`);
-            callback(data, error);
-          } else {
-            if (data.hasOwnProperty('body')) {
-              var changeTicket = {};
-              var result_array = (JSON.parse(data.body).result);
-              changeTicket = ({"change_ticket_number" : result_array.number, "active" : result_array.active, "priority" : result_array.priority,
-                                   "description" : result_array.description, "work_start" : result_array.work_start, "work_end" : result_array.work_end,
-                                   "change_ticket_key" : result_array.sys_id});
-              callback(changeTicket, error); 
-            } 
-           }            
-        });    
+     this.connector.postRecord(callback);
   }
 }
 
